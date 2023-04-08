@@ -2,6 +2,11 @@ package gg.ted.closest_points;
 
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.cli.*;
@@ -77,15 +82,37 @@ public class Main {
             if(cmd.hasOption('r')) {
                 String fileName = cmd.getOptionValue('r');
 
+                List<Point2D> points = new ArrayList<Point2D>();
+                BufferedReader reader = new BufferedReader(new FileReader(fileName));
+                for(String line; (line = reader.readLine()) != null; ) {
+                    String[] tokens = line.split(",");
+                    if(tokens.length == 2) {
+                        double x = Double.parseDouble(tokens[0]);
+                        double y = Double.parseDouble(tokens[1]);
+                        points.add(new Point2D.Double(x, y));
+                    }
+                }
+                System.out.println("Read " + points.size() + " points");
+
+                ClosestPoints2D cp2d = new NaiveClosestPoints2D();
+                LineSegment2D c = cp2d.closestPoints(points);
+
+                System.out.println("The closest points are: " + c.getA().toString() + " " + c.getB().toString());
+                System.out.println("with a distance of: " + c.length());
+                System.out.println("Length calls: " + cp2d.getNumLengthCalls());
             }
         } catch (ParseException e) {
             System.out.println(e.getMessage());
             helpFormatter.printHelp("closest_points", options);
-
             System.exit(1);
         } catch (NumberFormatException e) {
             helpFormatter.printHelp("closest_points", options);
-
+            System.exit(1);
+        } catch (FileNotFoundException e) {
+            System.out.println(e.getMessage());
+            System.exit(1);
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
             System.exit(1);
         }
     }
