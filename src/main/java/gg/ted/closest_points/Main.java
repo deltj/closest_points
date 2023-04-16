@@ -22,6 +22,7 @@ public class Main {
         Option optW = new Option("X", "max_x", true, "maximum x value");
         Option optH = new Option("Y", "max_y", true, "maximum y value");
         Option optRead = new Option("r", "read", true, "read points from a file");
+        Option optShamos = new Option("s", "shamos", false, "use the Shamos method");
 
         options.addOption(optGen);
         options.addOption(optX);
@@ -29,6 +30,7 @@ public class Main {
         options.addOption(optW);
         options.addOption(optH);
         options.addOption(optRead);
+        options.addOption(optShamos);
 
         CommandLineParser parser = new DefaultParser();
         HelpFormatter helpFormatter = new HelpFormatter();
@@ -80,9 +82,10 @@ public class Main {
             }
 
             if(cmd.hasOption('r')) {
+                //  The user wants to read points from a file
                 String fileName = cmd.getOptionValue('r');
 
-                List<Point2D> points = new ArrayList<Point2D>();
+                List<Point2D> points = new ArrayList<>();
                 BufferedReader reader = new BufferedReader(new FileReader(fileName));
                 for(String line; (line = reader.readLine()) != null; ) {
                     String[] tokens = line.split(",");
@@ -94,7 +97,13 @@ public class Main {
                 }
                 System.out.println("Read " + points.size() + " points");
 
-                ClosestPoints2D cp2d = new NaiveClosestPoints2D();
+                //  Figure out which algorithm to use
+                ClosestPoints2D cp2d;
+                if(cmd.hasOption('s')) {
+                    cp2d = new ShamosClosestPoints2D();
+                } else {
+                    cp2d = new NaiveClosestPoints2D();
+                }
                 LineSegment2D c = cp2d.closestPoints(points);
 
                 System.out.println("The closest points are: " + c.getA().toString() + " " + c.getB().toString());

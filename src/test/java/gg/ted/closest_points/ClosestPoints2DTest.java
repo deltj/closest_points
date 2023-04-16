@@ -12,7 +12,7 @@ class ClosestPoints2DTest {
 
     @Test
     void closestPoints_Naive_twoPoints() {
-        List<Point2D> points = new ArrayList<Point2D>();
+        List<Point2D> points = new ArrayList<>();
         points.add(new Point2D.Double(0, 0));
         points.add(new Point2D.Double(0, 1));
 
@@ -25,7 +25,7 @@ class ClosestPoints2DTest {
 
     @Test
     void closestPoints_Naive_threePoints() {
-        List<Point2D> points = new ArrayList<Point2D>();
+        List<Point2D> points = new ArrayList<>();
         points.add(new Point2D.Double(0, 0));
         points.add(new Point2D.Double(0, 1));
         points.add(new Point2D.Double(0, 3));
