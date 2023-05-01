@@ -17,34 +17,34 @@ public class ShamosClosestPoints2D extends ClosestPoints2D {
      * @param points A set of points
      * @return Points sorted by X value
      */
-    public List<Point2D> sortX(List<Point2D> points) {
-        List<Point2D> sortedPoints = new ArrayList<>(points);
+    public List<Point2D> sortX(List<Point2D> S) {
+        List<Point2D> sortedPoints = new ArrayList<>(S);
         sortedPoints.sort(Comparator.comparingDouble(Point2D::getX));
         return sortedPoints;
     }
 
     /**
      * Create a copy of the provided List of points and sort it by Y value
-     * @param points A set of points
+     * @param S A set of points
      * @return Points sorted by Y value
      */
-    public List<Point2D> sortY(List<Point2D> points) {
-        List<Point2D> sortedPoints = new ArrayList<>(points);
+    public List<Point2D> sortY(List<Point2D> S) {
+        List<Point2D> sortedPoints = new ArrayList<>(S);
         sortedPoints.sort(Comparator.comparingDouble(Point2D::getY));
         return sortedPoints;
     }
 
     /**
      * Find the median X value in the point set
-     * @param points A set of points
+     * @param S A set of points
      * @return The median x value
      */
-    public double medianX(List<Point2D> points) {
-        final int n = points.size();
+    public double medianX(List<Point2D> S) {
+        final int n = S.size();
         if(n % 2 == 0) {
-            return (points.get((n/2) - 1).getX() + points.get(n/2).getX()) / 2.0;
+            return (S.get((n/2) - 1).getX() + S.get(n/2).getX()) / 2.0;
         } else {
-            return points.get(n/2).getX();
+            return S.get(n/2).getX();
         }
     }
 
@@ -54,8 +54,8 @@ public class ShamosClosestPoints2D extends ClosestPoints2D {
      * @return A line segment describing the two closest points in the set
      */
     @Override
-    public LineSegment2D closestPoints(List<Point2D> P) {
-        final int n = P.size();
+    public LineSegment2D closestPoints(List<Point2D> S) {
+        final int n = S.size();
         //System.out.println("n=" + n);
 
         //  Recursion base case
@@ -64,14 +64,14 @@ public class ShamosClosestPoints2D extends ClosestPoints2D {
 
             //  Use the naive closest points algorithm
             NaiveClosestPoints2D ncp2d = new NaiveClosestPoints2D();
-            LineSegment2D result = ncp2d.closestPoints(P);
+            LineSegment2D result = ncp2d.closestPoints(S);
             numLengthCalls += ncp2d.getNumLengthCalls();
             return result;
         }
 
         //  Sort the points by X and Y values
-        List<Point2D> X = sortX(P);
-        List<Point2D> Y = sortY(P);
+        List<Point2D> X = sortX(S);
+        List<Point2D> Y = sortY(S);
         //TODO: This implementation sorts P in every recursive call, which seems bad.
         //  I may need to use a helper function to pass the sorted values to each
         //  subsequent call
@@ -83,7 +83,7 @@ public class ShamosClosestPoints2D extends ClosestPoints2D {
         //  Bisect the input set using the median x value
         List<Point2D> Pl = new ArrayList<>();
         List<Point2D> Pr = new ArrayList<>();
-        for(Point2D p : P) {
+        for(Point2D p : S) {
             if(p.getX() < mx) {
                 Pl.add(p);
             } else {

@@ -11,10 +11,10 @@ public abstract class ClosestPoints2D {
 
     /**
      * Find the closest pair of points in the point set
-     * @param points The point set to analyze
+     * @param S The point set to analyze
      * @return The closest pair as a line segment
      */
-    public abstract LineSegment2D closestPoints(List<Point2D> points);
+    public abstract LineSegment2D closestPoints(List<Point2D> S);
 
     /**
      * Reset performance counters

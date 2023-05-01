@@ -13,13 +13,13 @@ public class NaiveClosestPoints2D extends ClosestPoints2D {
      * @return A line segment describing the two closest points in the set
      */
     @Override
-    public LineSegment2D closestPoints(List<Point2D> P) {
+    public LineSegment2D closestPoints(List<Point2D> S) {
         resetCounters();
 
         LineSegment2D closest = null;
 
-        for(Point2D a : P) {
-            for(Point2D b : P) {
+        for(Point2D a : S) {
+            for(Point2D b : S) {
                 LineSegment2D ab = new LineSegment2D(a, b);
 
                 final double len_ab = ab.length();
